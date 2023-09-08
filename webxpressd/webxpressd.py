@@ -68,7 +68,7 @@ def main():
 
     # parse arguments
     parser = argparse.ArgumentParser()
-    parser.add_argument("--port", help="service port number", type=int, default=8080)
+    parser.add_argument("--port", help="service port number", type=int, default=80)
     args = parser.parse_args()
 
     # start service
