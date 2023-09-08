@@ -5,6 +5,10 @@ import socketserver
 import http.server
 
 from selenium import webdriver
+from selenium.webdriver.chrome.options import Options
+from selenium.webdriver.chrome.service import Service 
+
+from bs4 import BeautifulSoup
 
 class WebXpressHTTPRequestHandler(http.server.BaseHTTPRequestHandler):
 
@@ -21,10 +25,15 @@ class WebXpressHTTPRequestHandler(http.server.BaseHTTPRequestHandler):
       return
 
     html = self.server.driver.page_source
+    soup = BeautifulSoup(html, 'html.parser')
+
+    for tag in soup.findAll(['meta', 'link', 'style', 'script', 'iframe', 'picture']):
+        tag.decompose()
+
     self.send_response(200)
     self.send_header('Content-Type', 'text/html')
     self.end_headers()
-    self.wfile.write(html.encode('cp932', 'ignore'))
+    self.wfile.write(soup.encode('cp932', 'ignore'))
 
 class StoppableServer(socketserver.TCPServer):
 
@@ -35,11 +44,13 @@ class StoppableServer(socketserver.TCPServer):
 
   # service loop
   def run(self):
-
+    
+    driver_path = '/usr/bin/chromedriver'
+    
     options = webdriver.ChromeOptions()
     options.add_argument('--headless')
 
-    self.driver = webdriver.Chrome(options=options)
+    self.driver = webdriver.Chrome(service=Service(driver_path), options=options)
 
     signal.signal(signal.SIGTERM, self.sigterm_handler)
 
