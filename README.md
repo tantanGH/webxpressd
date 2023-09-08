@@ -25,12 +25,14 @@ webexpressd は Chromium を使います。かなりサイズが大きいもの�
 
 ---
 
-## Install (webxpressd)
-
-更新版のインストールはpipだけでokです。
+## Install (git,pip)
 
     sudo apt install git
     sudo apt install pip
+
+---
+
+## Install (webxpressd)
 
     pip install git+https://github.com/tantanGH/webxpressd.git
 
