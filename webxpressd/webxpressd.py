@@ -23,7 +23,7 @@ class WebXpressHTTPRequestHandler(http.server.BaseHTTPRequestHandler):
 
     if self.path[:7] == "/?http=":
       url = self.path[7:]
-      res = requests.get(url)
+      res = requests.get("http://" + url)
       status_code = res.status_code
       content_type = response.headers['Content-Type']
       if content_type == "text/html" or content_type == "text/plain":
@@ -32,7 +32,7 @@ class WebXpressHTTPRequestHandler(http.server.BaseHTTPRequestHandler):
         content = res.content
     elif self.path[:8] == "/?https=":
       url = self.path[8:]
-      res = requests.get(url)
+      res = requests.get("https://" + url)
       status_code = res.status_code
       content_type = response.headers['Content-Type']
       if content_type == "text/html" or content_type == "text/plain":
