@@ -67,7 +67,7 @@ class WebXpressHTTPRequestHandler(http.server.BaseHTTPRequestHandler):
       elif content_type[:10] == "text/plain":
         content_type = "text/plain"
         content = res.content
-      else
+      else:
         status_code = 404
     elif self.path[:8] == "/?https=":
       url = self.path[8:]
