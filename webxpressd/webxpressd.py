@@ -4,13 +4,14 @@ import signal
 import socketserver
 import http.server
 import requests
-import pathlib
+import io
+
+from bs4 import BeautifulSoup
+from PIL import Image
 
 #from selenium import webdriver
 #from selenium.webdriver.chrome.options import Options
 #from selenium.webdriver.chrome.service import Service 
-
-from bs4 import BeautifulSoup
 
 class WebXpressHTTPRequestHandler(http.server.BaseHTTPRequestHandler):
 
@@ -25,7 +26,14 @@ class WebXpressHTTPRequestHandler(http.server.BaseHTTPRequestHandler):
       res = requests.get("http://" + url)
       status_code = res.status_code
       content_type = res.headers['Content-Type']
-      content = res.content
+      if content_type[:6] == "image/":
+        image = Image.open(io.BytesIO(res.content))
+        imgByteArr = io.BytesIO()
+        image.save(imgByteArr, format="JPEG", quality=10)
+        content = imgByteArr.getvalue()
+        content_type = "image/jpeg"
+      else:
+        content = res.content
     elif self.path[:8] == "/?https=":
       url = self.path[8:]
       res = requests.get("https://" + url)

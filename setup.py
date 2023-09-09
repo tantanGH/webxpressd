@@ -25,5 +25,5 @@ setuptools.setup(
     },
     packages=setuptools.find_packages(),
     python_requires=">=3.7",
-    install_requires=["selenium", "beautifulsoup4"],
+    install_requires=["pillow", "beautifulsoup4", "selenium"],
 )
