@@ -36,13 +36,20 @@ webexpressd は Chromium を使います。かなりサイズが大きいもの�
 
     pip install git+https://github.com/tantanGH/webxpressd.git
 
+一般ユーザが予約ポートで待ち受けできるように、pythonの実効ファイルに対して特別な許可を与えます。
+
+    ls -alF /usr/bin/python3
+    sudo setcap CAP_NET_BIND_SERVICE+ep /usr/bin/python3.9
+
+これはWebXpressionが80番以外のポートへのアクセスをサポートしていないためです。
+
 ---
 
 ## 使い方
 
-    sudo webxpressd --port 80
+    webxpressd
 
-WebXpression がポート80番以外のアクセスに対応していないため、80番で待受を行う必要があります。
+でポート80番で待ち受け開始します。
 
 X680x0側では、`\etc\hosts` に
 
