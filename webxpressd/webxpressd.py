@@ -155,7 +155,7 @@ class StoppableServer(socketserver.TCPServer):
     self.driver_path = chrome_driver
     self.driver = None
 
-    os.makedirs(self.cache_path, exist_ok=True)
+    #os.makedirs(self.cache_path, exist_ok=True)
 
     if self.driver_path:
       options = webdriver.ChromeOptions()
