@@ -17,16 +17,28 @@ Raspberry Pi OS上で動作する、WebXpressionのためのpreprocessing servic
 
 ---
 
-## Install (git,pip)
+## 前提条件
+
+* Raspberry Pi 4B (4GB)
+* Raspberry Pi OS Lite (GUIなし、32bit) の最新版
+
+でのみ確認しています。
+
+X680x0実機とIPネットワークで接続されており、かつインターネットにアクセスできる必要があります。
+以下の覚書などを参考にしてください。
+
+* (https://github.com/tantanGH/nereid-wifi-connection)[https://github.com/tantanGH/nereid-wifi-connection]
+
+---
+
+## インストール
 
 git, pip が入っていない場合はインストール。
 
     sudo apt install git
     sudo apt install pip
 
----
-
-## Install (webxpressd)
+pipで導入。
 
     pip install git+https://github.com/tantanGH/webxpressd.git
 
