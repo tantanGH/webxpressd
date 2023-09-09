@@ -66,7 +66,7 @@ X680x0側では、`\etc\hosts` に
 
     192.168.31.101    webxpressd
 
-として、webxpressdが動いているホストに名前でアクセスできるようにしてください。WebXpressionはIPアドレスでのアクセスには対応していません。
+として、webxpressdが動いているホストに`webxpressd`の名前でアクセスできるようにしてください。WebXpressionはIPアドレスでのアクセスには対応していません。
 
 WebXpressionでサイトを閲覧する場合は、
 
