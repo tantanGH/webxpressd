@@ -59,16 +59,35 @@ class WebXpressHTTPRequestHandler(http.server.BaseHTTPRequestHandler):
         image = Image.open(io.BytesIO(res.content))
         imgByteArr = io.BytesIO()
         image.save(imgByteArr, format="JPEG", quality=self.server.image_quality)
-        content = imgByteArr.getvalue()
         content_type = "image/jpeg"
-      else:
+        content = imgByteArr.getvalue()
+      elif content_type[:9] == "text/html":
+        content_type = "text/html"
         content = res.content
+      elif content_type[:10] == "text/plain":
+        content_type = "text/plain"
+        content = res.content
+      else
+        status_code = 404
     elif self.path[:8] == "/?https=":
       url = self.path[8:]
       res = requests.get("https://" + url)
       status_code = res.status_code
       content_type = res.headers['Content-Type']
-      content = res.content
+      if content_type[:6] == "image/":
+        image = Image.open(io.BytesIO(res.content))
+        imgByteArr = io.BytesIO()
+        image.save(imgByteArr, format="JPEG", quality=self.server.image_quality)
+        content_type = "image/jpeg"
+        content = imgByteArr.getvalue()
+      elif content_type[:9] == "text/html":
+        content_type = "text/html"
+        content = res.content
+      elif content_type[:10] == "text/plain":
+        content_type = "text/plain"
+        content = res.content
+      else:
+        status_code = 404
     else:
       status_code = 404
 
