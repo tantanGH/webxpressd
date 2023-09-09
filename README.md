@@ -27,7 +27,7 @@ Raspberry Pi OS上で動作する、WebXpressionのためのpreprocessing servic
 X680x0実機とIPネットワークで接続されており、かつインターネットにアクセスできる必要があります。
 以下の覚書などを参考にしてください。
 
-* (https://github.com/tantanGH/nereid-wifi-connection)[https://github.com/tantanGH/nereid-wifi-connection]
+* [https://github.com/tantanGH/nereid-wifi-connection](https://github.com/tantanGH/nereid-wifi-connection)
 
 ---
 
