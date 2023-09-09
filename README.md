@@ -11,6 +11,7 @@ Raspberry Pi OS上で動作する、WebXpressionのためのpreprocessing servic
 * 文字コード変換
 * httpsサイトへのアクセス
 * 未対応タグの除去
+* 画像の再圧縮
 
 などを行います。
 
