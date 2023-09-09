@@ -36,12 +36,18 @@ webexpressd は Chromium を使います。かなりサイズが大きいもの�
 
     pip install git+https://github.com/tantanGH/webxpressd.git
 
-一般ユーザが予約ポートで待ち受けできるように、pythonの実効ファイルに対して特別な許可を与えます。
+---
 
-    ls -alF /usr/bin/python3
-    sudo setcap CAP_NET_BIND_SERVICE+ep /usr/bin/python3.9
+## ポートリダイレクトの設定
 
-これはWebXpressionが80番以外のポートへのアクセスをサポートしていないためです。
+webxpressdは一般ユーザ権限で動かすため、予約ポート(1024未満)は使えません。
+しかしWebXpressionは80番ポート以外接続できないので、このままでは利用できません。
+
+このため、80番ポートへのアクセスを6803番ポートにリダイレクトする設定をiptablesに対して行います。
+
+    sudo apt install iptables-persistent
+    sudo iptables -t nat -A PREROUTING -p tcp --dport 80 -j REDIRECT --to-port 6803
+    sudo netfilter-persistent save
 
 ---
 
@@ -49,7 +55,8 @@ webexpressd は Chromium を使います。かなりサイズが大きいもの�
 
     webxpressd
 
-でポート80番で待ち受け開始します。
+でポート6803番で待ち受け開始します。
+
 
 X680x0側では、`\etc\hosts` に
 
