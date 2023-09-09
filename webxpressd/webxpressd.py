@@ -58,7 +58,7 @@ class WebXpressHTTPRequestHandler(http.server.BaseHTTPRequestHandler):
       if content_type[:6] == "image/":
         image = Image.open(io.BytesIO(res.content))
         imgByteArr = io.BytesIO()
-        image.save(imgByteArr, format="JPEG", quality=self.server.image_quality)
+        image.convert('RGB').save(imgByteArr, format="JPEG", quality=self.server.image_quality)
         content_type = "image/jpeg"
         content = imgByteArr.getvalue()
       elif content_type[:9] == "text/html":
@@ -77,7 +77,7 @@ class WebXpressHTTPRequestHandler(http.server.BaseHTTPRequestHandler):
       if content_type[:6] == "image/":
         image = Image.open(io.BytesIO(res.content))
         imgByteArr = io.BytesIO()
-        image.save(imgByteArr, format="JPEG", quality=self.server.image_quality)
+        image.convert('RGB').save(imgByteArr, format="JPEG", quality=self.server.image_quality)
         content_type = "image/jpeg"
         content = imgByteArr.getvalue()
       elif content_type[:9] == "text/html":
