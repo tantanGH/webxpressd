@@ -29,7 +29,7 @@ class WebXpressHTTPRequestHandler(http.server.BaseHTTPRequestHandler):
       if content_type[:6] == "image/":
         image = Image.open(io.BytesIO(res.content))
         imgByteArr = io.BytesIO()
-        image.save(imgByteArr, format="JPEG", quality=10)
+        image.save(imgByteArr, format="JPEG", quality=self.server.image_quality)
         content = imgByteArr.getvalue()
         content_type = "image/jpeg"
       else:
@@ -120,9 +120,10 @@ class StoppableServer(socketserver.TCPServer):
     os.kill(os.getpid(), signal.SIGINT)   # emulate CTRL+C
 
   # service loop
-  def run(self, cache_path, chrome_driver):
+  def run(self, cache_path, image_quality, chrome_driver):
     
     self.cache_path = cache_path
+    self.image_quality = image_quality
     self.driver_path = chrome_driver
     self.driver = None
 
@@ -152,6 +153,7 @@ def main():
     parser = argparse.ArgumentParser()
     parser.add_argument("cache_path", help="cache data path")
     parser.add_argument("--port", help="service port number", type=int, default=6803)
+    parser.add_argument("--image_quality", help="image quality", type=int, default=20)
 #    parser.add_argument("--chrome_driver", help="chrome driver path", default="/usr/bin/chromedriver")
     args = parser.parse_args()
 
@@ -160,7 +162,7 @@ def main():
     with StoppableServer(("0.0.0.0", args.port), WebXpressHTTPRequestHandler) as server:
       print(f"Started at port {args.port}")
 #      server.run(args.cache_path, args.chrome_driver)
-      server.run(args.cache_path, None)
+      server.run(args.cache_path, args.image_quality, None)
 
 if __name__ == "__main__":
     main()
