@@ -19,26 +19,19 @@ class WebXpressHTTPRequestHandler(http.server.BaseHTTPRequestHandler):
     status_code = None
     content_type = None
     content = None
-    html = None
 
     if self.path[:7] == "/?http=":
       url = self.path[7:]
       res = requests.get("http://" + url)
       status_code = res.status_code
       content_type = res.headers['Content-Type']
-      if content_type == "text/html" or content_type == "text/plain":
-        html = res.text
-      elif content_type == "image/jpeg" or content_type == "image/png":
-        content = res.content
+      content = res.content
     elif self.path[:8] == "/?https=":
       url = self.path[8:]
       res = requests.get("https://" + url)
       status_code = res.status_code
       content_type = res.headers['Content-Type']
-      if content_type == "text/html" or content_type == "text/plain":
-        html = res.text
-      elif content_type == "image/jpeg" or content_type == "image/png":
-        content = res.content
+      content = res.content
     else:
       status_code = 404
 
@@ -51,9 +44,9 @@ class WebXpressHTTPRequestHandler(http.server.BaseHTTPRequestHandler):
 #      self.server.driver.get("https://" + url)
 #      html = self.server.driver.page_source
 
-    if html is not None:
+    if content_type == "text/html":
 
-      soup = BeautifulSoup(html, 'html.parser')
+      soup = BeautifulSoup(content, 'html.parser')
 
       for tag in soup.findAll(['meta', 'link', 'style', 'script', 'iframe', 'picture']):
         tag.decompose()
