@@ -25,7 +25,7 @@ class WebXpressHTTPRequestHandler(http.server.BaseHTTPRequestHandler):
       url = self.path[7:]
       res = requests.get("http://" + url)
       status_code = res.status_code
-      content_type = response.headers['Content-Type']
+      content_type = res.headers['Content-Type']
       if content_type == "text/html" or content_type == "text/plain":
         html = res.text
       elif content_type == "image/jpeg" or content_type == "image/png":
@@ -34,7 +34,7 @@ class WebXpressHTTPRequestHandler(http.server.BaseHTTPRequestHandler):
       url = self.path[8:]
       res = requests.get("https://" + url)
       status_code = res.status_code
-      content_type = response.headers['Content-Type']
+      content_type = res.headers['Content-Type']
       if content_type == "text/html" or content_type == "text/plain":
         html = res.text
       elif content_type == "image/jpeg" or content_type == "image/png":
