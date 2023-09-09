@@ -6,9 +6,9 @@ import http.server
 import requests
 import pathlib
 
-from selenium import webdriver
-from selenium.webdriver.chrome.options import Options
-from selenium.webdriver.chrome.service import Service 
+#from selenium import webdriver
+#from selenium.webdriver.chrome.options import Options
+#from selenium.webdriver.chrome.service import Service 
 
 from bs4 import BeautifulSoup
 
@@ -41,6 +41,7 @@ class WebXpressHTTPRequestHandler(http.server.BaseHTTPRequestHandler):
         content = res.content
     else:
       status_code = 404
+
 #    elif self.path[:16] == "/?chrome=1&http=":
 #      url = self.path[16:]
 #      self.server.driver.get("http://" + url)
@@ -57,7 +58,27 @@ class WebXpressHTTPRequestHandler(http.server.BaseHTTPRequestHandler):
       for tag in soup.findAll(['meta', 'link', 'style', 'script', 'iframe', 'picture']):
         tag.decompose()
 
-      for img in soup.findAll(['img']):
+      for a in soup.findAll('a', href=True):
+        if a["href"][:7] == "http://":
+          a["href"] = "http://webxpressd/?http=" + a["href"][7:]
+        elif a["href"][:8] == "https://":
+          a["href"] = "http://webxpressd/?https=" + a["href"][8:]
+        elif a["href"][:1] == "/":
+          if self.path[:7] == "/?http=":
+            pos = self.path[7:].find('/')
+            a["href"] = "http://webxpressd/?http=" + self.path[7:7+pos+1] + a["href"][1:]
+          elif self.path[:8] == "/?https=":
+            pos = self.path[8:].find('/')
+            a["href"] = "http://webxpressd/?https=" + self.path[8:8+pos+1] + a["href"][1:]
+        else:
+          if self.path[:7] == "/?http=":
+            pos = self.path[7:].rfind('/')
+            a["href"] = "http://webxpressd/?http=" + self.path[7:7+pos+1] + a["href"]
+          elif self.path[:8] == "/https=":
+            pos = self.path[8:].rfind('/')
+            a["href"] = "http://webxpressd/?https=" + self.path[8:8+pos+1] + a["href"] 
+
+      for img in soup.findAll('img', src=True):
         if img["src"][:7] == "http://":
           img["src"] = "http://webxpressd/?http=" + img["src"][7:]
         elif img["src"][:8] == "https://":
@@ -95,21 +116,21 @@ class StoppableServer(socketserver.TCPServer):
   # sigterm handler
   def sigterm_handler(self, signum, frame):
     print("Received SIGTERM. Stopping the service.")
-    os.kill(os.getpid(), signal.SIGINT)   # CTRL+C が押されたことにする
+    os.kill(os.getpid(), signal.SIGINT)   # emulate CTRL+C
 
   # service loop
   def run(self, cache_path, chrome_driver):
     
     self.cache_path = cache_path
     self.driver_path = chrome_driver
+    self.driver = None
 
     os.makedirs(self.cache_path, exist_ok=True)
 
-    options = webdriver.ChromeOptions()
-    options.add_argument('--headless')
-
-#    self.driver = webdriver.Chrome(service=Service(self.driver_path), options=options)
-    self.driver = None
+    if self.driver_path:
+      options = webdriver.ChromeOptions()
+      options.add_argument('--headless')
+      self.driver = webdriver.Chrome(service=Service(self.driver_path), options=options)
 
     signal.signal(signal.SIGTERM, self.sigterm_handler)
 
@@ -129,14 +150,15 @@ def main():
     parser = argparse.ArgumentParser()
     parser.add_argument("cache_path", help="cache data path")
     parser.add_argument("--port", help="service port number", type=int, default=6803)
-    parser.add_argument("--chrome_driver", help="chrome driver path", default="/usr/bin/chromedriver")
+#    parser.add_argument("--chrome_driver", help="chrome driver path", default="/usr/bin/chromedriver")
     args = parser.parse_args()
 
     # start service
     socketserver.TCPServer.allow_reuse_address = True
     with StoppableServer(("0.0.0.0", args.port), WebXpressHTTPRequestHandler) as server:
       print(f"Started at port {args.port}")
-      server.run(args.cache_path, args.chrome_driver)
+#      server.run(args.cache_path, args.chrome_driver)
+      server.run(args.cache_path, None)
 
 if __name__ == "__main__":
     main()

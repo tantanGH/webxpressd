@@ -16,16 +16,9 @@ Raspberry Pi OS上で動作する、WebXpressionのためのpreprocessing servic
 
 ---
 
-## Install (chromium)
-
-webexpressd は Chromium を使います。かなりサイズが大きいものなので、新規のSDカードに最新の Raspberry Pi OS Lite (32bit) を導入し、そこへ導入することをお勧めします。
-
-    sudo apt update
-    sudo apt install chromium-chromedriver
-
----
-
 ## Install (git,pip)
+
+git, pip が入っていない場合はインストール。
 
     sudo apt install git
     sudo apt install pip
@@ -38,7 +31,18 @@ webexpressd は Chromium を使います。かなりサイズが大きいもの�
 
 ---
 
-## ポートリダイレクトの設定
+## 使い方
+
+キャッシュ用ディレクトリを用意します。
+
+    cd
+    mkdir -p var/webxpress-cache
+
+起動時にキャッシュディレクトリを指定します。
+
+    webxpressd var/webxpress-cache
+
+デフォルトではポート6803番で待ち受け開始します。
 
 webxpressdは一般ユーザ権限で動かすため、予約ポート(1024未満)は使えません。
 しかしWebXpressionは80番ポート以外接続できないので、このままでは利用できません。
@@ -49,13 +53,7 @@ webxpressdは一般ユーザ権限で動かすため、予約ポート(1024未�
     sudo iptables -t nat -A PREROUTING -p tcp --dport 80 -j REDIRECT --to-port 6803
     sudo netfilter-persistent save
 
----
-
-## 使い方
-
-    webxpressd
-
-でポート6803番で待ち受け開始します。
+一度設定するだけでokです。
 
 
 X680x0側では、`\etc\hosts` に
@@ -78,7 +76,7 @@ WebXpressionでサイトを閲覧する場合は、
 
 ## 制限事項
 
-ページ内リンクや埋め込み画像にはまだ対応していません。
+JavaScriptを使ったダイナミックなページには対応していません。
 
 ---
 
