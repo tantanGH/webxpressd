@@ -15,6 +15,35 @@ from PIL import Image
 
 class WebXpressHTTPRequestHandler(http.server.BaseHTTPRequestHandler):
 
+  def do_HEAD(self):
+
+    status_code = None
+    content_type = None
+    last_modified = None
+
+    if self.path[:7] == "/?http=":
+      url = self.path[7:]
+      res = requests.head("http://" + url)
+      status_code = res.status_code
+      content_type = res.headers['Content-Type']
+      if "Last-Modified" in res.headers:
+        last_modified = res.headers['Last-Modified']
+    elif self.path[:8] == "/?https=":
+      url = self.path[8:]
+      res = requests.head("https://" + url)
+      status_code = res.status_code
+      content_type = res.headers['Content-Type']
+      if "Last-Modified" in res.headers:
+        last_modified = res.headers['Last-Modified']
+    else:
+      status_code = 404
+
+      self.send_response(status_code)
+      self.send_header('Content-Type', content_type)
+      if last_modified:
+        self.send_header('Last-Modified', last_modified)
+      self.end_headers()
+
   def do_GET(self):
 
     status_code = None
