@@ -140,7 +140,8 @@ class StoppableServer(socketserver.TCPServer):
       pass
     finally:
       self.server_close()
-      self.driver.quit()
+      if self.driver:
+        self.driver.quit()
       print("Stopped.")
 
 # main
