@@ -39,6 +39,8 @@ class WebXpressHTTPRequestHandler(http.server.BaseHTTPRequestHandler):
         html = res.text
       elif content_type == "image/jpeg" or content_type == "image/png":
         content = res.content
+    else:
+      status_code = 404
 #    elif self.path[:16] == "/?chrome=1&http=":
 #      url = self.path[16:]
 #      self.server.driver.get("http://" + url)
@@ -106,7 +108,8 @@ class StoppableServer(socketserver.TCPServer):
     options = webdriver.ChromeOptions()
     options.add_argument('--headless')
 
-    self.driver = webdriver.Chrome(service=Service(self.driver_path), options=options)
+#    self.driver = webdriver.Chrome(service=Service(self.driver_path), options=options)
+    self.driver = None
 
     signal.signal(signal.SIGTERM, self.sigterm_handler)
 
