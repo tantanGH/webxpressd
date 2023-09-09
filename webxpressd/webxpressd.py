@@ -3,6 +3,7 @@ import argparse
 import signal
 import socketserver
 import http.server
+import requests
 
 from selenium import webdriver
 from selenium.webdriver.chrome.options import Options
@@ -13,10 +14,19 @@ from bs4 import BeautifulSoup
 class WebXpressHTTPRequestHandler(http.server.BaseHTTPRequestHandler):
 
   def do_GET(self):
+    html = None
     if self.path[:7] == "/?http=":
-      self.server.driver.get("http://" + self.path[7:])
+      url = self.path[7:]
+      res = requests.get(url)
+      html = res.text
     elif self.path[:8] == "/?https=":
-      self.server.driver.get("https://" + self.path[8:])
+      url = self.path[8:]
+      res = requests.get(url)
+      html = res.text
+    elif self.path[:17] == "/?chrome=1&https=":
+      url = self.path[17:]
+      self.server.driver.get("https://" + url)
+      html = self.server.driver.page_source
     else:
       self.send_response(400)
       self.send_header('Content-Type', 'text/plain')
@@ -24,7 +34,6 @@ class WebXpressHTTPRequestHandler(http.server.BaseHTTPRequestHandler):
       self.wfile.write(b'400 Bad Request')
       return
 
-    html = self.server.driver.page_source
     soup = BeautifulSoup(html, 'html.parser')
 
     for tag in soup.findAll(['meta', 'link', 'style', 'script', 'iframe', 'picture']):
