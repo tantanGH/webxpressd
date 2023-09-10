@@ -178,7 +178,9 @@ class WebXpressHTTPRequestHandler(http.server.BaseHTTPRequestHandler):
 
       for img in soup.findAll('img', src=True):
         src = img["src"].strip()
-        if src[:7] == "http://":
+        if src[:5] == "data:":
+          img.decompose()
+        elif src[:7] == "http://":
           img["src"] = "http://webxpressd/?http=" + src[7:]
         elif src[:8] == "https://":
           img["src"] = "http://webxpressd/?https=" + src[8:]
