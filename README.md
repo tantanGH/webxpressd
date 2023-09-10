@@ -46,6 +46,8 @@ pipで導入。
 
 ## 使い方
 
+コマンドラインから起動します。
+
     webxpressd
 
 デフォルトではポート6803番、画像クオリティ20で待ち受け開始します。
@@ -67,6 +69,8 @@ X680x0側では、`\etc\hosts` に
     192.168.31.101    webxpressd
 
 などとして、webxpressdが動いているホストに`webxpressd`の名前でアクセスできるようにしてください。WebXpressionはIPアドレスでのアクセスには対応していません。
+
+また、WebXpressionのキャッシュディレクトリ(WEBCACHE)はRAMDISK上に取ることをお勧めします。NereidであればバンクメモリRAMDISKを活用するのが良いでしょう。
 
 WebXpressionでサイトを閲覧する場合は、
 
