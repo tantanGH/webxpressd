@@ -165,8 +165,8 @@ class WebXpressHTTPRequestHandler(http.server.BaseHTTPRequestHandler):
             pos = self.path[8:].rfind('/')
             a["href"] = "http://webxpressd/?https=" + self.path[8:8+pos+1] + href 
 
-      for img in soup.findAll('img', attrs={"decoding":"async"}):
-        img.decompose()
+      for img in soup.findAll('img', attrs={"srcset":True}):
+        del img["srcset"]
 
       for img in soup.findAll('img', attrs={"data-origin":True}):
         img["src"] = img["data-origin"].strip()
