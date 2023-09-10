@@ -137,7 +137,7 @@ class WebXpressHTTPRequestHandler(http.server.BaseHTTPRequestHandler):
           a["href"] = "http://webxpressd/?http=" + href[7:]
         elif href[:8] == "https://":
           a["href"] = "http://webxpressd/?https=" + href[8:]
-        elif ahref[:1] == "/":
+        elif href[:1] == "/":
           if self.path[:7] == "/?http=":
             pos = self.path[7:].find('/')
             a["href"] = "http://webxpressd/?http=" + self.path[7:7+pos+1] + href[1:]
