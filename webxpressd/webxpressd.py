@@ -9,6 +9,9 @@ import io
 from bs4 import BeautifulSoup
 from PIL import Image
 
+from svglib.svglib import svg2rlg
+from reportlab.graphics import renderPM
+
 #from selenium import webdriver
 #from selenium.webdriver.chrome.options import Options
 #from selenium.webdriver.chrome.service import Service 
@@ -55,7 +58,20 @@ class WebXpressHTTPRequestHandler(http.server.BaseHTTPRequestHandler):
       res = requests.get("http://" + url)
       status_code = res.status_code
       content_type = res.headers['Content-Type']
-      if content_type[:6] == "image/":
+      if content_type[:9] == "image/svg":
+        svg = svg2rlg(io.BytesIO(res.content))
+        imgByteArr = io.BytesIO()
+        renderPM.drawToFile(svg, imgByteArr, format="PNG")
+        image = Image.open(io.BytesIO(imgByteArr)).convert('RGB')
+        if image.width >= 2048:
+          image = image.resize((image.width // 4, image.height // 4))
+        elif image.width >= 1024:
+          image = image.resize((image.width // 2, image.height // 2))
+        imgByteArr = io.BytesIO()
+        image.save(imgByteArr, format="JPEG", quality=self.server.image_quality)
+        content_type = "image/jpeg"
+        content = imgByteArr.getvalue()        
+      elif content_type[:6] == "image/":
         image = Image.open(io.BytesIO(res.content)).convert('RGB')
         if image.width >= 2048:
           image = image.resize((image.width // 4, image.height // 4))
@@ -116,47 +132,49 @@ class WebXpressHTTPRequestHandler(http.server.BaseHTTPRequestHandler):
         tag.decompose()
 
       for a in soup.findAll('a', href=True):
-        if a["href"][:7] == "http://":
-          a["href"] = "http://webxpressd/?http=" + a["href"][7:]
-        elif a["href"][:8] == "https://":
-          a["href"] = "http://webxpressd/?https=" + a["href"][8:]
-        elif a["href"][:1] == "/":
+        href = a["href"].strip()
+        if href[:7] == "http://":
+          a["href"] = "http://webxpressd/?http=" + href[7:]
+        elif href[:8] == "https://":
+          a["href"] = "http://webxpressd/?https=" + href[8:]
+        elif ahref[:1] == "/":
           if self.path[:7] == "/?http=":
             pos = self.path[7:].find('/')
-            a["href"] = "http://webxpressd/?http=" + self.path[7:7+pos+1] + a["href"][1:]
+            a["href"] = "http://webxpressd/?http=" + self.path[7:7+pos+1] + href[1:]
           elif self.path[:8] == "/?https=":
             pos = self.path[8:].find('/')
-            a["href"] = "http://webxpressd/?https=" + self.path[8:8+pos+1] + a["href"][1:]
+            a["href"] = "http://webxpressd/?https=" + self.path[8:8+pos+1] + href[1:]
         else:
           if self.path[:7] == "/?http=":
             pos = self.path[7:].rfind('/')
-            a["href"] = "http://webxpressd/?http=" + self.path[7:7+pos+1] + a["href"]
+            a["href"] = "http://webxpressd/?http=" + self.path[7:7+pos+1] + href
           elif self.path[:8] == "/https=":
             pos = self.path[8:].rfind('/')
-            a["href"] = "http://webxpressd/?https=" + self.path[8:8+pos+1] + a["href"] 
+            a["href"] = "http://webxpressd/?https=" + self.path[8:8+pos+1] + href 
 
       for img in soup.findAll('img', attrs={"data-original":True}):
-        img["src"] = img["data-original"]
+        img["src"] = img["data-original"].strip()
 
       for img in soup.findAll('img', src=True):
-        if img["src"][:7] == "http://":
-          img["src"] = "http://webxpressd/?http=" + img["src"][7:]
-        elif img["src"][:8] == "https://":
-          img["src"] = "http://webxpressd/?https=" + img["src"][8:]
-        elif img["src"][:1] == "/":
+        src = img["src"].strip()
+        if src[:7] == "http://":
+          img["src"] = "http://webxpressd/?http=" + src[7:]
+        elif src[:8] == "https://":
+          img["src"] = "http://webxpressd/?https=" + src[8:]
+        elif src[:1] == "/":
           if self.path[:7] == "/?http=":
             pos = self.path[7:].find('/')
-            img["src"] = "http://webxpressd/?http=" + self.path[7:7+pos+1] + img["src"][1:]
+            img["src"] = "http://webxpressd/?http=" + self.path[7:7+pos+1] + src[1:]
           elif self.path[:8] == "/?https=":
             pos = self.path[8:].find('/')
-            img["src"] = "http://webxpressd/?https=" + self.path[8:8+pos+1] + img["src"][1:]
+            img["src"] = "http://webxpressd/?https=" + self.path[8:8+pos+1] + src[1:]
         else:
           if self.path[:7] == "/?http=":
             pos = self.path[7:].rfind('/')
-            img["src"] = "http://webxpressd/?http=" + self.path[7:7+pos+1] + img["src"]
+            img["src"] = "http://webxpressd/?http=" + self.path[7:7+pos+1] + src
           elif self.path[:8] == "/https=":
             pos = self.path[8:].rfind('/')
-            img["src"] = "http://webxpressd/?https=" + self.path[8:8+pos+1] + img["src"] 
+            img["src"] = "http://webxpressd/?https=" + self.path[8:8+pos+1] + src 
 
       content = soup.encode('cp932', 'ignore')
 
