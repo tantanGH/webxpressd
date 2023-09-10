@@ -94,7 +94,20 @@ class WebXpressHTTPRequestHandler(http.server.BaseHTTPRequestHandler):
       res = requests.get("https://" + url)
       status_code = res.status_code
       content_type = res.headers['Content-Type']
-      if content_type[:6] == "image/":
+      if content_type[:9] == "image/svg":
+        svg = svg2rlg(io.BytesIO(res.content))
+        imgByteArr = io.BytesIO()
+        renderPM.drawToFile(svg, imgByteArr, format="PNG")
+        image = Image.open(io.BytesIO(imgByteArr)).convert('RGB')
+        if image.width >= 2048:
+          image = image.resize((image.width // 4, image.height // 4))
+        elif image.width >= 1024:
+          image = image.resize((image.width // 2, image.height // 2))
+        imgByteArr = io.BytesIO()
+        image.save(imgByteArr, format="JPEG", quality=self.server.image_quality)
+        content_type = "image/jpeg"
+        content = imgByteArr.getvalue()   
+      elif content_type[:6] == "image/":
         image = Image.open(io.BytesIO(res.content)).convert('RGB')
         if image.width >= 2048:
           image = image.resize((image.width // 4, image.height // 4))
