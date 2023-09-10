@@ -61,7 +61,7 @@ class WebXpressHTTPRequestHandler(http.server.BaseHTTPRequestHandler):
       if content_type[:9] == "image/svg":
         svg = svg2rlg(io.BytesIO(res.content))
         imgByteArr = io.BytesIO()
-        renderPM.drawToFile(svg, imgByteArr, format="PNG")
+        renderPM.drawToFile(svg, imgByteArr, fmt="PNG")
         image = Image.open(io.BytesIO(imgByteArr)).convert('RGB')
         if image.width >= 2048:
           image = image.resize((image.width // 4, image.height // 4))
@@ -97,7 +97,7 @@ class WebXpressHTTPRequestHandler(http.server.BaseHTTPRequestHandler):
       if content_type[:9] == "image/svg":
         svg = svg2rlg(io.BytesIO(res.content))
         imgByteArr = io.BytesIO()
-        renderPM.drawToFile(svg, imgByteArr, format="PNG")
+        renderPM.drawToFile(svg, imgByteArr, fmt="PNG")
         image = Image.open(io.BytesIO(imgByteArr)).convert('RGB')
         if image.width >= 2048:
           image = image.resize((image.width // 4, image.height // 4))
