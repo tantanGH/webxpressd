@@ -22,6 +22,8 @@ WebXpression開発者の Mitsuky さんのご迷惑にならないよう、問�
 
 ## 前提条件
 
+* [WebXpression.x version 0.46](http://retropc.net/x68000/software/internet/wwwbrowser/webxpression/)
+
 * Raspberry Pi 4B (4GB)
 * Raspberry Pi OS Lite (GUIなし、32bit) の最新版
 
