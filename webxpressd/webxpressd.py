@@ -129,7 +129,8 @@ class WebXpressHTTPRequestHandler(http.server.BaseHTTPRequestHandler):
 
         soup = BeautifulSoup(content, 'html.parser')
 
-        for tag in soup.findAll(['meta', 'link', 'style', 'script', 'iframe', 'picture']):
+#        for tag in soup.findAll(['meta', 'link', 'style', 'script', 'iframe', 'picture']):
+        for tag in soup.findAll(['meta', 'link', 'style', 'script', 'iframe']):
           tag.decompose()
 
         # special hack for xbeeing.com
