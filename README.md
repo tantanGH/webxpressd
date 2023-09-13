@@ -15,6 +15,9 @@ Raspberry Pi OS上で動作する、WebXpressionのためのpreprocessing servic
 
 などを行います。
 
+本ソフトウェアは WebXpression の高速・高機能を活かすために独自で開発しているものです。
+WebXpression開発者の Mitsuky さんのご迷惑にならないよう、問い合わせについては tantan までお願いします。
+
 ---
 
 ## 前提条件
@@ -89,6 +92,8 @@ WebXpressionでサイトを閲覧する場合は、
 X68000Z で WebXpression.x version 0.46 を使用して画像ありのページを表示すると画面が乱れます。これは WebXpression.x 側で CRTCに設定している一部のレジスタ値が範囲外のものであるためです。これを修正して X68000Z でも正しく表示できるようにするための差分を以下に置きます。
 
 [WebXpression.bfd](https://github.com/tantanGH/)
+
+ただし完全無保証です。
 
 ---
 
