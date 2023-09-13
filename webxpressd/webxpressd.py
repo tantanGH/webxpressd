@@ -136,6 +136,8 @@ class WebXpressHTTPRequestHandler(http.server.BaseHTTPRequestHandler):
         if 'xbeeing.com' in url:
           for div in soup.findAll('div', attrs={'id':'sidebar'}):
             div.decompose()
+          for div in soup.findAll('div', attrs={'id':'related-box'}):
+            div.decompose()
 
         for a in soup.findAll('a', href=True):
           href = a["href"].strip()
