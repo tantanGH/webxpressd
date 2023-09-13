@@ -91,7 +91,7 @@ WebXpressionでサイトを閲覧する場合は、
 
 X68000Z で WebXpression.x version 0.46 を使用して画像ありのページを表示すると画面が乱れます。これは WebXpression.x 側で CRTCに設定している一部のレジスタ値が範囲外のものであるためです。これを修正して X68000Z でも正しく表示できるようにするための差分を以下に置きます。
 
-[WebXpression.bfd](https://github.com/tantanGH/)
+* [WebXpression.bfd](https://github.com/tantanGH/webxpressd/raw/main/bfd/WebXpression.bfd)
 
 ただし完全無保証です。
 
