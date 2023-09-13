@@ -182,10 +182,18 @@ class WebXpressHTTPRequestHandler(http.server.BaseHTTPRequestHandler):
             img["src"] = "http://webxpressd/?https=" + src[8:]
           elif src[:1] == "/":
             pos = url.find('/')
+            if pos < 0:
+              u = url + "/"
+            else:
+              u = url[:pos+1]
             img["src"] = "http://webxpressd/?" + protocol + "=" + url[:pos+1] + src[1:]
           else:
             pos = url.rfind('/')
-            img["src"] = "http://webxpressd/?" + protocol + "=" + url[:pos+1] + src
+            if pos < 0:
+              u = url + "/"
+            else:
+              u = url[:pos+1]
+            img["src"] = "http://webxpressd/?" + protocol + "=" + u + src
 
         content = soup.encode('cp932', 'ignore')
 
