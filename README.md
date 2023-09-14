@@ -31,7 +31,7 @@ WebXpression開発者の Mitsuky さんのご迷惑にならないよう、問�
 
 でのみ確認しています。
 
-X680x0実機とIPネットワークで接続されており、かつインターネットにアクセスできる必要があります。
+Raspberry Pi はX680x0実機とIPネットワークで接続されており、かつインターネットにアクセスできる必要があります。
 以下の覚書などを参考にしてください。
 
 * [https://github.com/tantanGH/nereid-wifi-connection](https://github.com/tantanGH/nereid-wifi-connection)
