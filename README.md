@@ -18,6 +18,8 @@ Raspberry Pi OS上で動作する、WebXpressionのためのpreprocessing servic
 本ソフトウェアは WebXpression の高速・高機能を活かすために独自で開発しているものです。
 WebXpression開発者の Mitsuky さんのご迷惑にならないよう、問い合わせについては tantan までお願いします。
 
+<img src='images/webxpress.jpeg'/>
+
 ---
 
 ## 前提条件
