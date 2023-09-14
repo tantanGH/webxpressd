@@ -113,15 +113,15 @@ class WebXpressHTTPRequestHandler(http.server.BaseHTTPRequestHandler):
           s = e.summary if hasattr(e, 'summary') else ""
           tm = time.mktime(e.updated_parsed) + 9 * 3600
           dt = datetime.datetime.fromtimestamp(tm).strftime('%Y-%m-%d %H:%M:%S %a')
-          content_tyep = "text/html"
           content_text += f"""
 <h2>{t}</h2>
-<h3>日付 {dt}</h3>
-<div>{s}</div>
+<h3>{dt}</h3>
+<div><br>{s}</div>
 <hr>
 """
-        content_text += "\n[EOF]\n"
+        content_text += "</body></html>\n"
         content = content_text.encode('cp932', 'ignore')
+        content_type = "text/html"
       elif content_type[:9] == "image/svg":
         svg = svg2rlg(io.BytesIO(res.content))
         pngImgByteArr = io.BytesIO()
