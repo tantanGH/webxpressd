@@ -133,6 +133,9 @@ class WebXpressHTTPRequestHandler(http.server.BaseHTTPRequestHandler):
         for tag in soup.findAll(['meta', 'link', 'style', 'script', 'iframe']):
           tag.decompose()
 
+        for comment in soup.findAll(string=lambda text: isinstance(text, Comment))
+          commment.decompose()
+
         # special hack for xbeeing.com
         if 'xbeeing.com' in url:
           for div in soup.findAll('div', attrs={'id':'sidebar'}):
