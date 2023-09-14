@@ -105,6 +105,8 @@ RSS News Feedを読む場合は、
 
 としてください。
 
+<img src='images/rss.jpeg'/>
+
 ---
 
 ## X68000Z で WebXpression.x を利用する際の注意
