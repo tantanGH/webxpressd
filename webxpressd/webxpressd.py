@@ -48,6 +48,12 @@ class WebXpressHTTPRequestHandler(http.server.BaseHTTPRequestHandler):
       elif self.path[:8] == "/?https=":
         protocol = "https"
         url = self.path[8:]
+      elif self.path[:13] == "/?rss=1&http=":
+        protocol = "http"
+        url = self.path[13:]
+      elif self.path[:14] == "/?rss=1&https=":
+        protocol = "https"
+        url = self.path[14:]
       else:
         raise HttpException(404)
 
