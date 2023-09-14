@@ -114,7 +114,7 @@ class WebXpressHTTPRequestHandler(http.server.BaseHTTPRequestHandler):
       if rss:
         feed = feedparser.parse(res.text)
         content_text = "<html><body>"
-        for e in feed.entries:
+        for e in feed.entries[:100]:
           t = e.title if hasattr(e, 'title') else ""
           s = e.summary if hasattr(e, 'summary') else ""
           tm = time.mktime(e.updated_parsed) + 9 * 3600
