@@ -5,6 +5,7 @@ import socketserver
 import http.server
 import requests
 import io
+import feedparser
 
 from bs4 import BeautifulSoup
 from PIL import Image
@@ -75,6 +76,7 @@ class WebXpressHTTPRequestHandler(http.server.BaseHTTPRequestHandler):
 
     protocol = None
     url = None
+    rss = False
     status_code = None
     content_type = None
     content = None
@@ -87,13 +89,36 @@ class WebXpressHTTPRequestHandler(http.server.BaseHTTPRequestHandler):
       elif self.path[:8] == "/?https=":
         protocol = "https"
         url = self.path[8:]
+      elif self.path[:13] == "/?rss=1&http=":
+        protocol = "http"
+        rss = True
+      elif self.path[:14] == "/?rss=1&https=":
+        protocol = "https"
+        rss = True
       else:
         raise HttpException(404)
 
       res = requests.get(protocol + "://" + url)
       status_code = res.status_code
       content_type = res.headers['Content-Type']
-      if content_type[:9] == "image/svg":
+      if rss:
+        feed = feedparser.parse(feed_content.text)
+        content_text = "<html><body>"
+        for e in feed.entries:
+          t = e.title if hasattr(e, 'title') else ""
+          s = e.summary if hasattr(e, 'summary') else ""
+          tm = time.mktime(e.updated_parsed) + 9 * 3600
+          dt = datetime.datetime.fromtimestamp(tm).strftime('%Y-%m-%d %H:%M:%S %a')
+          content_tyep = "text/html"
+          content_text += f"""
+<h2>{t}</h2>
+<h3>日付 {dt}</h3>
+<div>{s}</div>
+<hr>
+"""
+        content_text += "\n[EOF]\n"
+        content = content_text.encode('cp932', 'ignore')
+      elif content_type[:9] == "image/svg":
         svg = svg2rlg(io.BytesIO(res.content))
         pngImgByteArr = io.BytesIO()
         renderPM.drawToFile(svg, pngImgByteArr, fmt="PNG")
@@ -125,7 +150,7 @@ class WebXpressHTTPRequestHandler(http.server.BaseHTTPRequestHandler):
       else:
         raise HttpException(404)
 
-      if content_type == "text/html":
+      if rss is False and content_type == "text/html":
 
         soup = BeautifulSoup(content, 'html.parser')
 

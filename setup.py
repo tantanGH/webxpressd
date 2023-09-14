@@ -5,7 +5,7 @@ with open("README.md", "r", encoding="utf-8") as fh:
 
 setuptools.setup(
     name="webxpressd",
-    version="0.3.0",
+    version="0.3.1",
     author="tantanGH",
     author_email="tantanGH@github",
     license='MIT',
@@ -25,5 +25,5 @@ setuptools.setup(
     },
     packages=setuptools.find_packages(),
     python_requires=">=3.7",
-    install_requires=["pillow", "beautifulsoup4", "svglib", "rlPyCairo"],
+    install_requires=["requests", "beautifulsoup4", "feedparser", "pillow", "svglib", "rlPyCairo"],
 )
