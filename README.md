@@ -91,6 +91,22 @@ WebXpressionでサイトを閲覧する場合は、
 
 ---
 
+## RSS News Feed
+
+webxpressd は RSS News Reader 機能を持っています。通常のWebサイトに比べてダイジェストのみですので、はるかに軽量アクセスできます。
+
+RSS News Feedを読む場合は、
+
+    http://webxpressd?rss=1&http=(rss httpサイトのURL)
+
+または
+
+    http://webxpressd?rss=1&https=(rss httpsサイトのURL)
+
+としてください。
+
+---
+
 ## X68000Z で WebXpression.x を利用する際の注意
 
 X68000Z で WebXpression.x version 0.46 を使用して画像ありのページを表示すると画面が乱れます。これは WebXpression.x 側で CRTCに設定している一部のレジスタ値が範囲外のものであるためです。これを修正して X68000Z でも正しく表示できるようにするための差分を以下に置きます。
@@ -110,6 +126,7 @@ X68000Z で WebXpression.x version 0.46 を使用して画像ありのページ�
 
 ## 変更履歴
 
+* 0.3.5 (2023/09/14) ... RSS表示に対応。
 * 0.3.0 (2023/09/13) ... HEADの実装改善。WebXpression.xをX68000Zで正常動作させる差分を同梱。
 * 0.2.7 (2023/09/10) ... SVG画像に対応。その他細かい修正。
 * 0.2.0 (2023/09/09) ... 初版
