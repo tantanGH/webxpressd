@@ -6,7 +6,7 @@ Preprocessing Service for WebXpression
 
 ## はじめに
 
-Raspberry Pi OS上で動作する、WebXpressionのためのpreprocessing serviceです。
+webxpressd は Raspberry Pi OS上で動作する、WebXpression.x のためのpreprocessing serviceです。
 
 * 文字コード変換
 * httpsサイトへのアクセス
@@ -15,7 +15,7 @@ Raspberry Pi OS上で動作する、WebXpressionのためのpreprocessing servic
 
 などを行います。
 
-本ソフトウェアは WebXpression の高速・高機能を活かすために独自で開発しているものです。
+本ソフトウェアは X680x0用 高性能WWWブラウザ WebXpression.x を、現代のサイトでも利用可能となるよう独自で開発しているものです。
 WebXpression開発者の Mitsuky さんのご迷惑にならないよう、問い合わせについては tantan までお願いします。
 
 <img src='images/webxpress.jpeg'/>
