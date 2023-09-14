@@ -104,7 +104,7 @@ class WebXpressHTTPRequestHandler(http.server.BaseHTTPRequestHandler):
       status_code = res.status_code
       content_type = res.headers['Content-Type']
       if rss:
-        feed = feedparser.parse(feed_content.text)
+        feed = feedparser.parse(res.text)
         content_text = "<html><body>"
         for e in feed.entries:
           t = e.title if hasattr(e, 'title') else ""
