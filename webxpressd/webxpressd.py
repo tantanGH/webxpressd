@@ -91,9 +91,11 @@ class WebXpressHTTPRequestHandler(http.server.BaseHTTPRequestHandler):
         url = self.path[8:]
       elif self.path[:13] == "/?rss=1&http=":
         protocol = "http"
+        url = self.path[13:]
         rss = True
       elif self.path[:14] == "/?rss=1&https=":
         protocol = "https"
+        url = self.path[14:]
         rss = True
       else:
         raise HttpException(404)
