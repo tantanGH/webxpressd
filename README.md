@@ -40,12 +40,7 @@ Raspberry Pi はX680x0実機とIPネットワークで接続されており、�
 
 ## インストール
 
-git, pip が入っていない場合はインストール。
-
-    sudo apt install git
-    sudo apt install pip
-
-pipで導入。
+    sudo apt install git pip libopenjp2-7 libxslt-dev
 
     pip install git+https://github.com/tantanGH/webxpressd.git
 
