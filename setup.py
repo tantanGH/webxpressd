@@ -25,5 +25,5 @@ setuptools.setup(
     },
     packages=setuptools.find_packages(),
     python_requires=">=3.7",
-    install_requires=["requests", "beautifulsoup4", "feedparser", "pillow==9.5.0", "svglib", "rlPyCairo"],
+    install_requires=["requests", "beautifulsoup4", "feedparser", "pillow<=9.5.0", "svglib", "rlPyCairo"],
 )
