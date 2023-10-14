@@ -40,9 +40,8 @@ Raspberry Pi はX680x0実機とIPネットワークで接続されており、�
 
 ## インストール
 
-    sudo apt install git pip libopenjp2-7 libxslt-dev
-
-    pip install git+https://github.com/tantanGH/webxpressd.git
+    sudo apt install -y git pip libopenjp2-7 libxslt-dev libcairo2-dev libjpeg-dev python3-lxml
+    pip install --brak-system-packages git+https://github.com/tantanGH/webxpressd.git
 
 ---
 
